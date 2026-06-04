@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -6,226 +6,330 @@
   <title>Notes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:           #0e0e0e;
-      --surface:      #181818;
-      --surface-2:    #202020;
-      --border:       #2a2a2a;
-      --text:         #f0ebe0;
-      --muted:        #555;
-      --accent:       #e8a020;
-      --accent-glow:  rgba(232, 160, 32, 0.08);
-      --danger:       #d9534f;
-      --radius:       3px;
-      --ease:         200ms ease;
+      --bg:      #080808;
+      --s1:      #111111;
+      --s2:      #181818;
+      --s3:      #222222;
+      --bd:      #232323;
+      --bd2:     #333333;
+      --txt:     #ede8df;
+      --txt2:    #88887f;
+      --txt3:    #3a3a38;
+      --accent:  #c8813a;
+      --green:   #5c9e72;
+      --red:     #b85450;
+      --radius:  4px;
+      --t:       180ms ease;
     }
 
+    html { font-size: 16px; }
     body {
       background: var(--bg);
-      color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
+      color: var(--txt);
+      font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       min-height: 100vh;
       line-height: 1.6;
     }
 
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--bd2); border-radius: 2px; }
+
     /* ── Header ── */
     header {
-      position: sticky; top: 0; z-index: 20;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      height: 60px;
-      padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--bd);
+      height: 54px; padding: 0 1.5rem;
+      display: flex; align-items: center; gap: 0.9rem;
     }
 
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      letter-spacing: -0.02em;
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.3rem; font-weight: 600;
+      letter-spacing: -0.01em; white-space: nowrap; flex-shrink: 0;
     }
     .logo em { color: var(--accent); font-style: italic; }
 
+    .search-wrap { flex: 1; max-width: 340px; position: relative; }
+    .search-wrap input {
+      width: 100%;
+      background: var(--s2); border: 1px solid var(--bd);
+      border-radius: var(--radius); color: var(--txt);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem; font-weight: 300;
+      padding: 0.42rem 0.75rem 0.42rem 1.9rem;
+      outline: none; transition: border-color var(--t);
+    }
+    .search-wrap input::placeholder { color: var(--txt3); }
+    .search-wrap input:focus { border-color: var(--accent); }
+    .search-icon {
+      position: absolute; left: 0.65rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--txt3); font-size: 0.8rem; pointer-events: none;
+    }
+
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; }
+
+    select {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--s2); border: 1px solid var(--bd);
+      border-radius: var(--radius); color: var(--txt2);
+      padding: 0.42rem 0.6rem; outline: none; cursor: pointer;
+      appearance: none; transition: border-color var(--t), color var(--t);
+    }
+    select:hover { border-color: var(--bd2); color: var(--txt); }
+
     /* ── Buttons ── */
     button {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: var(--ease);
-      padding: 0.5rem 1.1rem;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border: none; border-radius: var(--radius);
+      cursor: pointer; transition: var(--t);
     }
-
-    .btn-primary { background: var(--accent); color: #0e0e0e; }
-    .btn-primary:hover { background: #f5b340; }
-
+    .btn-primary {
+      background: var(--accent); color: #080808;
+      font-size: 0.62rem; font-weight: 500; padding: 0.42rem 0.9rem;
+    }
+    .btn-primary:hover { filter: brightness(1.12); }
     .btn-ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--border);
+      background: transparent; color: var(--txt2);
+      border: 1px solid var(--bd);
+      font-size: 0.62rem; font-weight: 400; padding: 0.42rem 0.75rem;
     }
-    .btn-ghost:hover { color: var(--text); border-color: #444; }
+    .btn-ghost:hover { color: var(--txt); border-color: var(--bd2); }
 
-    .btn-icon {
-      background: transparent;
-      color: var(--muted);
-      padding: 0.3rem 0.55rem;
-      font-size: 0.65rem;
+    /* ── Subbar ── */
+    .subbar {
+      border-bottom: 1px solid var(--bd);
+      padding: 0.5rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--txt3);
     }
-    .btn-icon:hover { color: var(--danger); }
+    .subbar em { color: var(--accent); font-style: normal; }
+    .subbar kbd {
+      font-family: inherit; color: var(--txt2);
+      border: 1px solid var(--bd2); border-radius: 2px;
+      padding: 0 3px; font-size: 0.55rem;
+    }
 
     /* ── Main ── */
-    main { max-width: 1080px; margin: 0 auto; padding: 2.5rem 2rem; }
+    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
 
-    /* ── Empty / loading ── */
+    /* ── State ── */
     .state {
-      text-align: center;
-      padding: 6rem 0;
-      color: var(--muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
+      text-align: center; padding: 5rem 0;
+      color: var(--txt3);
     }
     .state-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      color: #2c2c2c;
-      margin-bottom: 0.6rem;
+      font-family: 'Cormorant Garant', serif;
+      font-size: 2.2rem; font-weight: 600;
+      color: var(--s3); margin-bottom: 0.5rem;
     }
+    .state p { font-size: 0.72rem; }
 
-    /* ── Grid ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 1rem;
+    /* ── Skeleton ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px,1fr)); gap: 1rem; }
+
+    .skel-card {
+      background: var(--s1); border: 1px solid var(--bd);
+      border-radius: var(--radius); padding: 1.2rem;
+      display: flex; flex-direction: column; gap: 0.7rem;
+    }
+    .skel {
+      background: linear-gradient(90deg,var(--s2) 25%,var(--s3) 50%,var(--s2) 75%);
+      background-size: 200% 100%; border-radius: 2px;
+      animation: shimmer 1.5s infinite;
+    }
+    .skel-h { height: 16px; width: 65%; }
+    .skel-l { height: 9px; }
+    .skel-ls { height: 9px; width: 45%; }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     /* ── Card ── */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--s1); border: 1px solid var(--bd);
       border-radius: var(--radius);
-      padding: 1.4rem 1.4rem 1rem;
-      display: flex; flex-direction: column; gap: 0.6rem;
-      cursor: pointer;
-      position: relative; overflow: hidden;
-      transition: border-color var(--ease), background var(--ease), transform var(--ease);
-      animation: rise 280ms ease both;
+      padding: 1.2rem 1.2rem 0.85rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: border-color var(--t), background var(--t), transform var(--t), box-shadow var(--t);
+      animation: rise 240ms ease both;
     }
+    .card:nth-child(2) { animation-delay: 35ms; }
+    .card:nth-child(3) { animation-delay: 70ms; }
+    .card:nth-child(4) { animation-delay: 105ms; }
+    .card:nth-child(5) { animation-delay: 140ms; }
+    .card:nth-child(6) { animation-delay: 175ms; }
 
-    .card::after {
-      content: '';
-      position: absolute; inset: 0 auto 0 0;
-      width: 2px;
+    .card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
       background: var(--accent);
-      transform: scaleY(0);
-      transform-origin: bottom;
-      transition: transform 220ms ease;
+      transform: scaleY(0); transform-origin: center;
+      transition: transform 220ms cubic-bezier(0.4,0,0.2,1);
     }
-    .card:hover { border-color: #383838; background: var(--surface-2); transform: translateY(-2px); }
-    .card:hover::after { transform: scaleY(1); }
+    .card:hover {
+      border-color: var(--bd2); background: var(--s2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.45);
+    }
+    .card:hover::before { transform: scaleY(1); }
 
     .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      line-height: 1.35;
-      padding-left: 0.6rem;
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.05rem; font-weight: 600; line-height: 1.3;
+      padding-left: 0.5rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-
     .card-body {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.75;
-      padding-left: 0.6rem;
+      font-size: 0.7rem; color: var(--txt2);
+      line-height: 1.75; padding-left: 0.5rem;
       overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
+      display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
       flex: 1;
     }
-
     .card-footer {
       display: flex; align-items: center; justify-content: space-between;
-      margin-top: 0.4rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border);
+      margin-top: 0.3rem; padding-top: 0.6rem; border-top: 1px solid var(--bd);
     }
+    .card-meta { display: flex; flex-direction: column; gap: 1px; }
+    .card-date  { font-size: 0.56rem; color: var(--txt3); letter-spacing: 0.05em; }
+    .card-words { font-size: 0.52rem; color: var(--txt3); }
 
-    .card-date { font-size: 0.6rem; color: #383838; letter-spacing: 0.06em; }
-
-    .card-actions { display: flex; gap: 0.2rem; opacity: 0; transition: opacity var(--ease); }
+    .card-actions { display: flex; gap: 0.2rem; opacity: 0; transition: opacity var(--t); }
     .card:hover .card-actions { opacity: 1; }
 
-    /* ── Modal ── */
+    .btn-card {
+      font-size: 0.52rem; font-weight: 400; padding: 0.22rem 0.45rem;
+      background: transparent; color: var(--txt3); border: 1px solid var(--bd);
+    }
+    .btn-card:hover { color: var(--txt2); border-color: var(--bd2); }
+    .btn-card.del:hover { color: var(--red); border-color: var(--red); }
+    .btn-card.del-confirm { color: var(--red); border-color: var(--red); background: rgba(184,84,80,.07); }
+
+    /* ── Backdrop & Modal ── */
     .backdrop {
       position: fixed; inset: 0; z-index: 50;
-      background: rgba(0,0,0,.75);
-      display: flex; align-items: center; justify-content: center;
-      padding: 1rem;
-      opacity: 0; pointer-events: none;
-      transition: opacity 200ms ease;
+      background: rgba(0,0,0,.82);
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+      opacity: 0; pointer-events: none; transition: opacity 200ms ease;
     }
     .backdrop.open { opacity: 1; pointer-events: all; }
 
     .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      width: 100%; max-width: 520px;
-      padding: 2rem;
-      display: flex; flex-direction: column; gap: 1.2rem;
-      transform: translateY(10px) scale(.99);
-      transition: transform 200ms ease;
+      background: var(--s1); border: 1px solid var(--bd2);
+      border-radius: var(--radius); width: 100%; max-width: 540px;
+      max-height: 90vh; display: flex; flex-direction: column;
+      transform: translateY(8px) scale(.99); transition: transform 200ms ease; overflow: hidden;
     }
     .backdrop.open .modal { transform: none; }
 
-    .modal-header {
+    .modal-head {
       display: flex; align-items: baseline; justify-content: space-between;
+      padding: 1.4rem 1.4rem 0; flex-shrink: 0;
     }
-    .modal-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem; font-weight: 700;
+    .modal-title {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.1rem; font-weight: 600;
     }
-    .modal-close {
-      background: transparent; border: none;
-      color: var(--muted); font-size: 1.4rem;
-      cursor: pointer; line-height: 1; padding: 0 0.2rem;
-      transition: color var(--ease);
+    .btn-close {
+      background: transparent; border: none; color: var(--txt3);
+      font-size: 1.2rem; cursor: pointer; line-height: 1; padding: 0 0.2rem;
+      transition: color var(--t);
     }
-    .modal-close:hover { color: var(--text); }
+    .btn-close:hover { color: var(--txt); }
 
-    /* ── Form ── */
-    .field { display: flex; flex-direction: column; gap: 0.35rem; }
-    label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .modal-body { padding: 1.1rem 1.4rem; overflow-y: auto; flex: 1; }
 
-    input, textarea {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem; font-weight: 300;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      padding: 0.7rem 0.9rem;
-      width: 100%; outline: none; resize: none;
-      transition: border-color var(--ease);
+    .field { display: flex; flex-direction: column; gap: 0.28rem; margin-bottom: 0.9rem; }
+    .field:last-child { margin-bottom: 0; }
+    label { font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--txt3); }
+
+    input[type=text], textarea {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem; font-weight: 300;
+      background: var(--bg); border: 1px solid var(--bd);
+      border-radius: var(--radius); color: var(--txt);
+      padding: 0.6rem 0.8rem; width: 100%; outline: none;
+      transition: border-color var(--t);
     }
-    input:focus, textarea:focus { border-color: var(--accent); }
-    textarea { min-height: 150px; line-height: 1.75; }
+    input[type=text]:focus, textarea:focus { border-color: var(--accent); }
+    textarea { resize: none; line-height: 1.75; min-height: 150px; overflow: hidden; }
 
-    .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; }
+    .field-hint { font-size: 0.52rem; color: var(--txt3); text-align: right; }
+    .field-hint em { color: var(--txt2); font-style: normal; }
 
-    /* ── Animations ── */
+    .modal-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.4rem 1.4rem; flex-shrink: 0;
+    }
+    .modal-foot-right { display: flex; gap: 0.5rem; }
+    .modal-foot-hint { font-size: 0.52rem; color: var(--txt3); }
+    .modal-foot-hint kbd {
+      font-family: inherit; color: var(--txt2);
+      border: 1px solid var(--bd2); border-radius: 2px; padding: 0 3px;
+    }
+
+    /* ── View modal ── */
+    .view-modal { max-width: 620px; }
+    .view-meta-bar {
+      font-size: 0.56rem; color: var(--txt3);
+      letter-spacing: 0.06em;
+      display: flex; gap: 1.25rem;
+    }
+    .view-title-text {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.75rem; font-weight: 600; line-height: 1.2;
+      margin: 1rem 0 0.9rem;
+    }
+    .view-body-text {
+      font-size: 0.8rem; color: var(--txt2);
+      line-height: 1.9; white-space: pre-wrap; word-break: break-word;
+    }
+
+    /* ── Toasts ── */
+    #toasts {
+      position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 100;
+      display: flex; flex-direction: column; gap: 0.4rem; pointer-events: none;
+    }
+    .toast {
+      font-size: 0.68rem; letter-spacing: 0.04em;
+      padding: 0.6rem 0.9rem; border-radius: var(--radius); border: 1px solid;
+      pointer-events: all; animation: toastIn 200ms ease both;
+    }
+    .toast.ok  { background: rgba(92,158,114,.1);  border-color: rgba(92,158,114,.25); color: var(--green); }
+    .toast.err { background: rgba(184,84,80,.1);   border-color: rgba(184,84,80,.25);  color: var(--red); }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
     @keyframes rise {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(5px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 580px) {
+      header { padding: 0 1rem; gap: 0.5rem; }
+      .search-wrap { max-width: 140px; }
+      main { padding: 1rem; }
+      .subbar { padding: 0.5rem 1rem; }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -233,37 +337,88 @@
 
 <header>
   <div class="logo">note<em>s</em></div>
-  <button class="btn-primary" onclick="openModal()">+ New</button>
+  <div class="search-wrap">
+    <span class="search-icon">&#9906;</span>
+    <input id="search" type="text" placeholder="Search notes…" oninput="filter()" />
+  </div>
+  <div class="header-right">
+    <select id="sort" onchange="filter()">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="az">A → Z</option>
+      <option value="za">Z → A</option>
+    </select>
+    <button class="btn-primary" onclick="openEditor()">+ New</button>
+  </div>
 </header>
 
-<main>
-  <div id="app"><div class="state">loading...</div></div>
-</main>
+<div class="subbar">
+  <span id="count-label">—</span>
+  <span id="kb-hint"><kbd>ctrl+n</kbd> new &nbsp;·&nbsp; <kbd>ctrl+↵</kbd> save &nbsp;·&nbsp; <kbd>esc</kbd> close</span>
+</div>
 
-<div class="backdrop" id="backdrop" onclick="onBackdrop(event)">
+<main><div id="app"></div></main>
+
+<!-- Editor modal -->
+<div class="backdrop" id="editor-bd" onclick="onBd(event,'editor-bd',closeEditor)">
   <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-heading" id="modal-heading">New note</h2>
-      <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-head">
+      <h2 class="modal-title" id="editor-title">New note</h2>
+      <button class="btn-close" onclick="closeEditor()">×</button>
     </div>
-    <div class="field">
-      <label for="f-title">Title</label>
-      <input id="f-title" type="text" placeholder="Give it a title…" />
+    <div class="modal-body">
+      <div class="field">
+        <label for="f-title">Title</label>
+        <input id="f-title" type="text" placeholder="Give this note a title…" />
+      </div>
+      <div class="field">
+        <label for="f-body">Body</label>
+        <textarea id="f-body" placeholder="Write your note here…" oninput="onBodyInput(this)"></textarea>
+        <span class="field-hint"><em id="wc">0</em> words</span>
+      </div>
     </div>
-    <div class="field">
-      <label for="f-body">Body</label>
-      <textarea id="f-body" placeholder="Write something…"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="save()">Save</button>
+    <div class="modal-foot">
+      <span class="modal-foot-hint" id="editor-ts"></span>
+      <div class="modal-foot-right">
+        <button class="btn-ghost" onclick="closeEditor()">Cancel</button>
+        <button class="btn-primary" onclick="saveNote()">Save</button>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- View modal -->
+<div class="backdrop" id="view-bd" onclick="onBd(event,'view-bd',closeView)">
+  <div class="modal view-modal">
+    <div class="modal-head">
+      <div class="view-meta-bar">
+        <span id="view-date"></span>
+        <span id="view-wc"></span>
+      </div>
+      <button class="btn-close" onclick="closeView()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="view-title-text" id="view-title"></div>
+      <div class="view-body-text"  id="view-body"></div>
+    </div>
+    <div class="modal-foot">
+      <div></div>
+      <div class="modal-foot-right">
+        <button class="btn-ghost" onclick="editFromView()">Edit</button>
+        <button class="btn-ghost" onclick="closeView()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
 <script>
   const API = '';
-  let activeId = null;
+  let notes = [];
+  let editId = null;
+  let viewId = null;
+  let delPending = null;
 
   const $ = id => document.getElementById(id);
 
@@ -277,81 +432,200 @@
     return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function fmt(iso) {
+  function ago(iso) {
+    const s = (Date.now() - new Date(iso)) / 1000;
+    if (s < 60)      return 'just now';
+    if (s < 3600)    return `${Math.floor(s/60)}m ago`;
+    if (s < 86400)   return `${Math.floor(s/3600)}h ago`;
+    if (s < 2592000) return `${Math.floor(s/86400)}d ago`;
     return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
   }
 
-  function cardHTML(n) {
+  function wc(s) { return (s ?? '').trim().split(/\s+/).filter(Boolean).length; }
+
+  function toast(msg, type = 'ok') {
+    const el = Object.assign(document.createElement('div'), { className: `toast ${type}`, textContent: msg });
+    $('toasts').appendChild(el);
+    setTimeout(() => el.remove(), 2800);
+  }
+
+  // ── Load ──
+  async function load() {
+    $('app').innerHTML = `<div class="grid">${Array(6).fill(`
+      <div class="skel-card">
+        <div class="skel skel-h"></div>
+        <div class="skel skel-l"></div>
+        <div class="skel skel-ls"></div>
+      </div>`).join('')}</div>`;
+    try {
+      notes = await req('/notes');
+      filter();
+    } catch {
+      $('app').innerHTML = `<div class="state"><div class="state-heading">Unreachable</div><p>Is the server running?</p></div>`;
+    }
+  }
+
+  // ── Filter & render ──
+  function filter() {
+    const q = $('search').value.toLowerCase().trim();
+    const s = $('sort').value;
+
+    let list = q
+      ? notes.filter(n => n.title.toLowerCase().includes(q) || (n.body ?? '').toLowerCase().includes(q))
+      : [...notes];
+
+    if (s === 'oldest') list.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+    else if (s === 'az') list.sort((a,b) => a.title.localeCompare(b.title));
+    else if (s === 'za') list.sort((a,b) => b.title.localeCompare(a.title));
+
+    const total = notes.length, shown = list.length;
+    $('count-label').innerHTML = q
+      ? `<em>${shown}</em> of ${total} matching "<em>${esc(q)}</em>"`
+      : `<em>${total}</em> ${total === 1 ? 'note' : 'notes'}`;
+
+    if (!list.length) {
+      $('app').innerHTML = q
+        ? `<div class="state"><div class="state-heading">No results</div><p>Nothing matched "${esc(q)}".</p></div>`
+        : `<div class="state"><div class="state-heading">Empty</div><p>Hit <strong>+ New</strong> to write your first note.</p></div>`;
+      return;
+    }
+    $('app').innerHTML = `<div class="grid">${list.map(card).join('')}</div>`;
+  }
+
+  function card(n) {
+    const words = wc(n.body);
     return `
-      <div class="card" onclick="openModal(${n.id})">
+      <div class="card" onclick="openView(${n.id})">
         <div class="card-title">${esc(n.title)}</div>
         ${n.body ? `<div class="card-body">${esc(n.body)}</div>` : ''}
         <div class="card-footer">
-          <span class="card-date">${fmt(n.created_at)}</span>
+          <div class="card-meta">
+            <span class="card-date">${ago(n.created_at)}</span>
+            ${words ? `<span class="card-words">${words} ${words===1?'word':'words'}</span>` : ''}
+          </div>
           <div class="card-actions" onclick="event.stopPropagation()">
-            <button class="btn-ghost btn-icon" onclick="openModal(${n.id})">edit</button>
-            <button class="btn-icon" onclick="del(${n.id})">del</button>
+            <button class="btn-card" onclick="openEditor(${n.id})">edit</button>
+            <button class="btn-card del" id="del-${n.id}" onclick="handleDel(event,${n.id})">del</button>
           </div>
         </div>
       </div>`;
   }
 
-  async function render() {
-    const app = $('app');
-    try {
-      const notes = await req('/notes');
-      if (!notes.length) {
-        app.innerHTML = `<div class="state"><div class="state-heading">Nothing here yet</div>Hit <em>+ New</em> to write your first note.</div>`;
-      } else {
-        app.innerHTML = `<div class="grid">${notes.map(cardHTML).join('')}</div>`;
-      }
-    } catch {
-      app.innerHTML = `<div class="state">Could not reach the API — is the server running?</div>`;
+  // ── Two-stage delete ──
+  function handleDel(e, id) {
+    e.stopPropagation();
+    const btn = $(`del-${id}`);
+    if (delPending && delPending !== id) {
+      const old = $(`del-${delPending}`);
+      if (old) { old.textContent = 'del'; old.classList.remove('del-confirm'); }
+    }
+    if (delPending !== id) {
+      delPending = id;
+      btn.textContent = 'sure?';
+      btn.classList.add('del-confirm');
+      setTimeout(() => {
+        if (delPending === id) {
+          btn.textContent = 'del'; btn.classList.remove('del-confirm'); delPending = null;
+        }
+      }, 2500);
+    } else {
+      doDelete(id);
     }
   }
 
-  async function openModal(id = null) {
-    activeId = id;
-    $('modal-heading').textContent = id ? 'Edit note' : 'New note';
+  async function doDelete(id) {
+    try {
+      await req(`/notes/${id}`, { method: 'DELETE' });
+      notes = notes.filter(n => n.id !== id);
+      delPending = null;
+      filter();
+      toast('Note deleted');
+    } catch { toast('Delete failed', 'err'); }
+  }
+
+  // ── Editor ──
+  async function openEditor(id = null) {
+    editId = id;
+    $('editor-title').textContent = id ? 'Edit note' : 'New note';
     $('f-title').value = '';
     $('f-body').value = '';
+    $('editor-ts').textContent = '';
+    $('wc').textContent = '0';
+
     if (id) {
-      const n = await req(`/notes/${id}`);
+      const n = notes.find(x => x.id === id) ?? await req(`/notes/${id}`);
       $('f-title').value = n.title;
-      $('f-body').value = n.body;
+      $('f-body').value = n.body ?? '';
+      $('editor-ts').textContent = `edited ${ago(n.updated_at)}`;
+      autoResize($('f-body'));
+      $('wc').textContent = wc(n.body);
     }
-    $('backdrop').classList.add('open');
-    $('f-title').focus();
+
+    $('editor-bd').classList.add('open');
+    setTimeout(() => $('f-title').focus(), 60);
   }
 
-  function closeModal() {
-    $('backdrop').classList.remove('open');
-    activeId = null;
-  }
+  function closeEditor() { $('editor-bd').classList.remove('open'); editId = null; }
 
-  function onBackdrop(e) { if (e.target === $('backdrop')) closeModal(); }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  async function save() {
+  async function saveNote() {
     const title = $('f-title').value.trim();
     const body  = $('f-body').value.trim();
-    if (!title) { $('f-title').focus(); return; }
-    if (activeId) {
-      await req(`/notes/${activeId}`, { method: 'PUT',  body: JSON.stringify({ title, body }) });
-    } else {
-      await req('/notes',             { method: 'POST', body: JSON.stringify({ title, body }) });
-    }
-    closeModal();
-    render();
+    if (!title) { $('f-title').focus(); toast('Title is required', 'err'); return; }
+    try {
+      if (editId) {
+        const updated = await req(`/notes/${editId}`, { method:'PUT', body: JSON.stringify({ title, body }) });
+        notes = notes.map(n => n.id === editId ? updated : n);
+        toast('Note updated');
+      } else {
+        const created = await req('/notes', { method:'POST', body: JSON.stringify({ title, body }) });
+        notes.unshift(created);
+        toast('Note created');
+      }
+      closeEditor();
+      filter();
+    } catch { toast('Something went wrong', 'err'); }
   }
 
-  async function del(id) {
-    if (!confirm('Delete this note?')) return;
-    await req(`/notes/${id}`, { method: 'DELETE' });
-    render();
+  // ── View ──
+  function openView(id) {
+    const n = notes.find(x => x.id === id);
+    if (!n) return;
+    viewId = id;
+    $('view-title').textContent = n.title;
+    $('view-body').textContent  = n.body || '(no body)';
+    $('view-date').textContent  = ago(n.created_at);
+    $('view-wc').textContent    = `${wc(n.body)} words`;
+    $('view-bd').classList.add('open');
   }
 
-  render();
+  function closeView() { $('view-bd').classList.remove('open'); viewId = null; }
+
+  function editFromView() {
+    const id = viewId; closeView(); openEditor(id);
+  }
+
+  function onBd(e, bdId, closeFn) { if (e.target === $(bdId)) closeFn(); }
+
+  // ── Utilities ──
+  function onBodyInput(el) {
+    autoResize(el);
+    $('wc').textContent = wc(el.value);
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  // ── Keyboard ──
+  document.addEventListener('keydown', e => {
+    const editorOpen = $('editor-bd').classList.contains('open');
+    if (e.key === 'Escape') { closeEditor(); closeView(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'n') { e.preventDefault(); if (!editorOpen) openEditor(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { if (editorOpen) saveNote(); }
+  });
+
+  load();
 </script>
 </body>
 </html>
