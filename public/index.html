@@ -1,0 +1,357 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0e0e0e;
+      --surface:      #181818;
+      --surface-2:    #202020;
+      --border:       #2a2a2a;
+      --text:         #f0ebe0;
+      --muted:        #555;
+      --accent:       #e8a020;
+      --accent-glow:  rgba(232, 160, 32, 0.08);
+      --danger:       #d9534f;
+      --radius:       3px;
+      --ease:         200ms ease;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 300;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+    .logo em { color: var(--accent); font-style: italic; }
+
+    /* ── Buttons ── */
+    button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--ease);
+      padding: 0.5rem 1.1rem;
+    }
+
+    .btn-primary { background: var(--accent); color: #0e0e0e; }
+    .btn-primary:hover { background: #f5b340; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: #444; }
+
+    .btn-icon {
+      background: transparent;
+      color: var(--muted);
+      padding: 0.3rem 0.55rem;
+      font-size: 0.65rem;
+    }
+    .btn-icon:hover { color: var(--danger); }
+
+    /* ── Main ── */
+    main { max-width: 1080px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+    /* ── Empty / loading ── */
+    .state {
+      text-align: center;
+      padding: 6rem 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    .state-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #2c2c2c;
+      margin-bottom: 0.6rem;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.4rem 1rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: border-color var(--ease), background var(--ease), transform var(--ease);
+      animation: rise 280ms ease both;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute; inset: 0 auto 0 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 220ms ease;
+    }
+    .card:hover { border-color: #383838; background: var(--surface-2); transform: translateY(-2px); }
+    .card:hover::after { transform: scaleY(1); }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      padding-left: 0.6rem;
+    }
+
+    .card-body {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.75;
+      padding-left: 0.6rem;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 0.4rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-date { font-size: 0.6rem; color: #383838; letter-spacing: 0.06em; }
+
+    .card-actions { display: flex; gap: 0.2rem; opacity: 0; transition: opacity var(--ease); }
+    .card:hover .card-actions { opacity: 1; }
+
+    /* ── Modal ── */
+    .backdrop {
+      position: fixed; inset: 0; z-index: 50;
+      background: rgba(0,0,0,.75);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+    .backdrop.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%; max-width: 520px;
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+      transform: translateY(10px) scale(.99);
+      transition: transform 200ms ease;
+    }
+    .backdrop.open .modal { transform: none; }
+
+    .modal-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+    }
+    .modal-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700;
+    }
+    .modal-close {
+      background: transparent; border: none;
+      color: var(--muted); font-size: 1.4rem;
+      cursor: pointer; line-height: 1; padding: 0 0.2rem;
+      transition: color var(--ease);
+    }
+    .modal-close:hover { color: var(--text); }
+
+    /* ── Form ── */
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    input, textarea {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem; font-weight: 300;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      padding: 0.7rem 0.9rem;
+      width: 100%; outline: none; resize: none;
+      transition: border-color var(--ease);
+    }
+    input:focus, textarea:focus { border-color: var(--accent); }
+    textarea { min-height: 150px; line-height: 1.75; }
+
+    .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; }
+
+    /* ── Animations ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">note<em>s</em></div>
+  <button class="btn-primary" onclick="openModal()">+ New</button>
+</header>
+
+<main>
+  <div id="app"><div class="state">loading...</div></div>
+</main>
+
+<div class="backdrop" id="backdrop" onclick="onBackdrop(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-heading" id="modal-heading">New note</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="field">
+      <label for="f-title">Title</label>
+      <input id="f-title" type="text" placeholder="Give it a title…" />
+    </div>
+    <div class="field">
+      <label for="f-body">Body</label>
+      <textarea id="f-body" placeholder="Write something…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="save()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = '';
+  let activeId = null;
+
+  const $ = id => document.getElementById(id);
+
+  async function req(path, opts = {}) {
+    const r = await fetch(API + path, { headers: { 'Content-Type': 'application/json' }, ...opts });
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  }
+
+  function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function fmt(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+
+  function cardHTML(n) {
+    return `
+      <div class="card" onclick="openModal(${n.id})">
+        <div class="card-title">${esc(n.title)}</div>
+        ${n.body ? `<div class="card-body">${esc(n.body)}</div>` : ''}
+        <div class="card-footer">
+          <span class="card-date">${fmt(n.created_at)}</span>
+          <div class="card-actions" onclick="event.stopPropagation()">
+            <button class="btn-ghost btn-icon" onclick="openModal(${n.id})">edit</button>
+            <button class="btn-icon" onclick="del(${n.id})">del</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function render() {
+    const app = $('app');
+    try {
+      const notes = await req('/notes');
+      if (!notes.length) {
+        app.innerHTML = `<div class="state"><div class="state-heading">Nothing here yet</div>Hit <em>+ New</em> to write your first note.</div>`;
+      } else {
+        app.innerHTML = `<div class="grid">${notes.map(cardHTML).join('')}</div>`;
+      }
+    } catch {
+      app.innerHTML = `<div class="state">Could not reach the API — is the server running?</div>`;
+    }
+  }
+
+  async function openModal(id = null) {
+    activeId = id;
+    $('modal-heading').textContent = id ? 'Edit note' : 'New note';
+    $('f-title').value = '';
+    $('f-body').value = '';
+    if (id) {
+      const n = await req(`/notes/${id}`);
+      $('f-title').value = n.title;
+      $('f-body').value = n.body;
+    }
+    $('backdrop').classList.add('open');
+    $('f-title').focus();
+  }
+
+  function closeModal() {
+    $('backdrop').classList.remove('open');
+    activeId = null;
+  }
+
+  function onBackdrop(e) { if (e.target === $('backdrop')) closeModal(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  async function save() {
+    const title = $('f-title').value.trim();
+    const body  = $('f-body').value.trim();
+    if (!title) { $('f-title').focus(); return; }
+    if (activeId) {
+      await req(`/notes/${activeId}`, { method: 'PUT',  body: JSON.stringify({ title, body }) });
+    } else {
+      await req('/notes',             { method: 'POST', body: JSON.stringify({ title, body }) });
+    }
+    closeModal();
+    render();
+  }
+
+  async function del(id) {
+    if (!confirm('Delete this note?')) return;
+    await req(`/notes/${id}`, { method: 'DELETE' });
+    render();
+  }
+
+  render();
+</script>
+</body>
+</html>
