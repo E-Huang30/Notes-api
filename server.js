@@ -1,8 +1,10 @@
+const path = require("path");
 const express = require("express");
 const { pool } = require("./db");
 
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
